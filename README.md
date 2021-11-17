@@ -1,6 +1,8 @@
-# vaccine-neuro-cohort
+# Impact of study design in analyses of the short-term neurological safety of COVID-19 vaccines in England  
 
-This is the code and configuration for vaccine-neuro-cohort.
+This is the code and configuration for our study evaluating the impact of choosing a cohort vs. an SCCS design for studies of neurological vaccine safety during the COVID-19 pandemic. 
+
+**This repo is work in progress - below sections are not updated**
 
 You can run this project via [Gitpod](https://gitpod.io) in a web browser by clicking on this badge: [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/opensafely/vaccine-neuro-cohort)
 
