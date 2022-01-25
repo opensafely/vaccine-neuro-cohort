@@ -5,8 +5,51 @@ expectations:
 
 actions:
 
-  generate_study_population:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition
+# EXTRACT DATA FOR EXPOSED AND POTENTIAL CONTROLS 
+
+  ## Extract data on vaccinated people 
+  ## NB; This study definition only contains the data needed for matching
+  generate_exposed_cohort:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_exposed
     outputs:
       highly_sensitive:
-        cohort: output/input.csv
+        cohort: output/input_exposed.csv
+
+  ## Extract data on potential concurrent controls 
+  ## NB; This study definition only contains the data needed for matching
+  generate_concurrent_controls:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_concurrent_controls
+    outputs:
+      highly_sensitive:
+        cohort: output/input_concurrent_controls.csv
+
+  ## Extract data on potential historical controls
+  ## NB; This study definition only contains the data needed for matching
+  generate_historical_controls:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_historical
+    outputs:
+      highly_sensitive:
+        cohort: output/input_historical.csv
+
+# MATCH EXPOSED TO CONTROLS 
+# Note that exposed and resulting matches need to be extracted into separate csvs to allow appropriate covariate information to be extracted 
+
+  ## Match vaccinated people to concurrent controls 
+  match_concurrent:
+    run: python:latest python analysis/matching.py
+    needs: [generate_exposed_cohort, generate_concurrent_controls]
+    outputs:
+      moderately_sensitive:
+        matching_report: output/matching_report_concurrent.txt
+      highly_sensitive:
+        matched_cases: output/matched_cases_concurrent.csv
+        matched_matches: output/matched_matches_concurrent.csv
+
+  ## Match vaccinated people to historical controls 
+
+  ## Extract time-updated data for matched concurrent controls 
+
+# CREATE THE REQUIRED POPULATIONS 
+## ie, merge case and match data, apply remaining inclusions and exclusions
+
+
