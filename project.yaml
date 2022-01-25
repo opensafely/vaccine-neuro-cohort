@@ -25,11 +25,6 @@ actions:
 
   ## Extract data on potential historical controls
   ## NB; This study definition only contains the data needed for matching
-  generate_historical_controls:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_historical
-    outputs:
-      highly_sensitive:
-        cohort: output/input_historical.csv
 
 # MATCH EXPOSED TO CONTROLS 
 # Note that exposed and resulting matches need to be extracted into separate csvs to allow appropriate covariate information to be extracted 
