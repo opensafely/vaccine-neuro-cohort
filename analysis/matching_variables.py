@@ -3,12 +3,12 @@ from codelists import *
 from datetime import datetime, timedelta
 
 
-def generate_matching_variables(index_date):
+def generate_matching_variables(index_date_variable):
     matching_variables = dict(
 
     ## age 
     age=patients.age_as_of(
-        "index_date",
+        f"{index_date_variable}",
         return_expectations={
             "rate": "universal",
             "int": {"distribution": "population_ages"},
@@ -31,7 +31,7 @@ def generate_matching_variables(index_date):
     ),
     ## geographical region 
     stp=patients.registered_practice_as_of(
-        "index_date",
+        f"{index_date_variable}",
         returning="stp_code",
         return_expectations={
             "rate": "universal",

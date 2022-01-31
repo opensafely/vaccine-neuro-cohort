@@ -10,7 +10,7 @@ match(
         "matching_age": "category",
         "stp": "category",
     },
-    index_date_variable="first_known_vaccine_date", 
+    index_date_variable="case_index_date", 
     replace_match_index_date_with_case="no_offset", 
     date_exclusion_variables={
         "death_date": "before",
