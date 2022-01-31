@@ -3,13 +3,13 @@ from codelists import *
 from datetime import datetime, timedelta
 
 
-def generate_outcome_variables(index_date):
+def generate_outcome_variables(index_date_variable):
     outcome_variables = dict(
 
     ## Bells Palsy
     bells_palsy_gp=patients.with_these_clinical_events(
         bells_palsy_primary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True,
         returning="date", 
         date_format="YYYY-MM-DD",
@@ -17,7 +17,7 @@ def generate_outcome_variables(index_date):
     ),
     bells_palsy_hospital=patients.admitted_to_hospital(
         with_these_diagnoses=bells_palsy_secondary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -25,7 +25,7 @@ def generate_outcome_variables(index_date):
     ), 
     bells_palsy_death=patients.with_these_codes_on_death_certificate(
         bells_palsy_secondary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         match_only_underlying_cause=False,
         returning="date_of_death",
         date_format="YYYY-MM-DD",
@@ -33,7 +33,7 @@ def generate_outcome_variables(index_date):
     ), 
     bells_palsy_emergency=patients.attended_emergency_care(
         with_these_diagnoses=bells_palsy_emergency_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True,
         returning="date_arrived",
         date_format="YYYY-MM-DD",
@@ -45,7 +45,7 @@ def generate_outcome_variables(index_date):
     ## Transverse Myelitis 
     transverse_myelitis_gp=patients.with_these_clinical_events(
         transverse_myelitis_primary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True,
         returning="date", 
         date_format="YYYY-MM-DD",
@@ -53,7 +53,7 @@ def generate_outcome_variables(index_date):
     ),
     transverse_myelitis_hospital=patients.admitted_to_hospital(
         with_these_diagnoses=transverse_myelitis_secondary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -61,7 +61,7 @@ def generate_outcome_variables(index_date):
     ), 
     transverse_myelitis_death=patients.with_these_codes_on_death_certificate(
         transverse_myelitis_secondary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         match_only_underlying_cause=False,
         returning="date_of_death",
         date_format="YYYY-MM-DD",
@@ -72,7 +72,7 @@ def generate_outcome_variables(index_date):
     ## Guillain Barre
     guillain_barre_gp=patients.with_these_clinical_events(
         guillain_barre_primary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True,
         returning="date", 
         date_format="YYYY-MM-DD",
@@ -80,7 +80,7 @@ def generate_outcome_variables(index_date):
     ),
     guillain_barre_hospital=patients.admitted_to_hospital(
         with_these_diagnoses=guillain_barre_secondary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True,
         returning="date_admitted",
         date_format="YYYY-MM-DD",
@@ -88,7 +88,7 @@ def generate_outcome_variables(index_date):
     ), 
     guillain_barre_death=patients.with_these_codes_on_death_certificate(
         guillain_barre_secondary_care_codes,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         match_only_underlying_cause=False,
         returning="date_of_death",
         date_format="YYYY-MM-DD",

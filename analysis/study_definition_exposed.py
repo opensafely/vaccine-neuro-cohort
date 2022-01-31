@@ -15,19 +15,19 @@ from codelists import *
 
 ## vaccine variables 
 from vaccine_variables import generate_vaccine_variables
-vaccine_variables = generate_vaccine_variables(index_date="index_date")
+vaccine_variables = generate_vaccine_variables(index_date_variable="index_date")
 
 ## matching variables 
 from matching_variables import generate_matching_variables
-matching_variables = generate_matching_variables(index_date="index_date")
+matching_variables = generate_matching_variables(index_date_variable="index_date")
 
 ## confounding variables (note, relative to vaccine date in exposed cohort)
 from confounding_variables import generate_confounding_variables
-confounding_variables = generate_confounding_variables(index_date="first_known_vaccine_date")
+confounding_variables = generate_confounding_variables(index_date_variable="first_known_vaccine_date")
 
 ## outcome variables (note, relative to vaccine date in exposed cohort)
 from outcome_variables import generate_outcome_variables
-outcome_variables = generate_outcome_variables(index_date="first_known_vaccine_date")
+outcome_variables = generate_outcome_variables(index_date_variable="first_known_vaccine_date")
 
 # Specify study definition
 
@@ -47,20 +47,29 @@ study = StudyDefinition(
         """
         (age >= 18 AND age < 105) 
         AND (sex = "M" OR sex = "F") 
-        AND exposed_known_care_home 
-        AND exposed_imd > 0 
-        AND exposed_has_baseline_time 
+        AND known_care_home 
+        AND imd > 0 
+        AND has_baseline_time 
         AND has_first_known_vaccine 
-        AND NOT exposed_has_died 
-        AND NOT exposed_pregnancy 
+        AND NOT has_died 
+        AND NOT pregnancy 
         """,
     ),
     
     # VACCINATION VARIABLES  
     **vaccine_variables, 
 
+    # define the case index date 
+    case_index_date=patients.minimum_of("first_moderna_date", "first_az_date", "first_pfizer_date"), 
+
     # MATCHING VARIABLES  
     **matching_variables, 
+
+    # CONFOUNDING VARIABLES  
+    **confounding_variables, 
+
+    # OUTCOME VARIABLES  
+    **outcome_variables, 
 
     # SELECTION VARIABLES 
     ### sex 
@@ -79,7 +88,7 @@ study = StudyDefinition(
     ## and we don't want to spend time matching ineligble exposed people  
 
     ### pregnancy 
-    exposed_pregnancy=patients.with_these_clinical_events(
+    pregnancy=patients.with_these_clinical_events(
     preg,
     returning="binary_flag",
     find_last_match_in_period=True,
@@ -88,14 +97,14 @@ study = StudyDefinition(
     ),
 
     ### has one year of baseline time
-    exposed_has_baseline_time=patients.registered_with_one_practice_between(
+    has_baseline_time=patients.registered_with_one_practice_between(
        start_date="first_known_vaccine_date - 1 year",
        end_date="first_known_vaccine_date",
        return_expectations={"incidence": 0.95},
     ),
 
     ### died before index
-    exposed_has_died=patients.died_from_any_cause(
+    has_died=patients.died_from_any_cause(
       on_or_before="first_known_vaccine_date",
       returning="binary_flag",
     ),
@@ -120,7 +129,7 @@ study = StudyDefinition(
     ## RESIDENTIAL STATUS 
     ### known care home 
     #### type of care home
-    exposed_care_home_type=patients.care_home_status_as_of(
+    care_home_type=patients.care_home_status_as_of(
         "first_known_vaccine_date",
         categorised_as={
             "CareHome": """
@@ -143,13 +152,13 @@ study = StudyDefinition(
         },
     ),
     #### has any value for the above 
-    exposed_known_care_home=patients.satisfying(
-        """exposed_care_home_type""",
+    known_care_home=patients.satisfying(
+        """care_home_type""",
         return_expectations={"incidence": 0.99},
     ),
 
     ## index of multiple deprivation, estimate of SES based on patient post code 
-    exposed_imd=patients.categorised_as(
+    imd=patients.categorised_as(
         {
             "0": "DEFAULT",
             "1": """index_of_multiple_deprivation >=1 AND index_of_multiple_deprivation < 32844*1/5""",
@@ -177,7 +186,6 @@ study = StudyDefinition(
             },
         },
     ),
-
 
 ) 
 

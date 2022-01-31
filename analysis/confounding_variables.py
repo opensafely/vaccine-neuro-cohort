@@ -3,7 +3,8 @@ from codelists import *
 from datetime import datetime, timedelta
 
 
-def generate_confounding_variables(index_date):
+def generate_confounding_variables(index_date_variable):
+
     confounding_variables = dict(
     # DEMOGRAPHICS AND LIFESTYLE 
     ## self-reported ethnicity 
@@ -21,19 +22,19 @@ def generate_confounding_variables(index_date):
     ## history of outcome events - for exclusion for each specific analysis 
     history_bells_palsy_gp=patients.with_these_clinical_events(
         bells_palsy_primary_care_codes,
-        between=["index_date - 1 year", "index_date"],
+        between=[f"{index_date_variable} - 1 year", f"{index_date_variable}"],
         returning="binary_flag",
         return_expectations={"incidence": 0.15},
     ),
     history_bells_palsy_hospital=patients.admitted_to_hospital(
         with_these_diagnoses=bells_palsy_secondary_care_codes,
-        between=["index_date - 1 year", "index_date"],
+        between=[f"{index_date_variable} - 1 year", f"{index_date_variable}"],
         returning="binary_flag",
         return_expectations={"incidence": 0.10},
     ),
     history_bells_palsy_emergency=patients.attended_emergency_care(
         with_these_diagnoses=bells_palsy_emergency_care_codes,
-        between=["index_date - 1 year", "index_date"],
+        between=[f"{index_date_variable} - 1 year", f"{index_date_variable}"],
         returning="binary_flag",
         return_expectations={"incidence": 0.10},
     ), 
@@ -41,13 +42,13 @@ def generate_confounding_variables(index_date):
 
     history_transverse_myelitis_gp=patients.with_these_clinical_events(
         transverse_myelitis_primary_care_codes,
-        between=["index_date - 1 year", "index_date"],
+        between=[f"{index_date_variable} - 1 year", f"{index_date_variable}"],
         returning="binary_flag",
         return_expectations={"incidence": 0.15},
     ),
     history_transverse_myelitis_hospital=patients.admitted_to_hospital(
         with_these_diagnoses=transverse_myelitis_secondary_care_codes,
-        between=["index_date - 1 year", "index_date"],
+        between=[f"{index_date_variable} - 1 year", f"{index_date_variable}"],
         returning="binary_flag",
         return_expectations={"incidence": 0.10},
     ),
@@ -55,13 +56,13 @@ def generate_confounding_variables(index_date):
 
     history_guillain_barre_gp=patients.with_these_clinical_events(
         guillain_barre_primary_care_codes,
-        between=["index_date - 1 year", "index_date"],
+        between=[f"{index_date_variable} - 1 year", f"{index_date_variable}"],
         returning="binary_flag",
         return_expectations={"incidence": 0.15},
     ),
     history_guillain_barre_hospital=patients.admitted_to_hospital(
         with_these_diagnoses=guillain_barre_secondary_care_codes,
-        between=["index_date - 1 year", "index_date"],
+        between=[f"{index_date_variable} - 1 year", f"{index_date_variable}"],
         returning="binary_flag",
         return_expectations={"incidence": 0.10},
     ),
@@ -70,78 +71,71 @@ def generate_confounding_variables(index_date):
     ### MS/NO
     history_ms_no_gp=patients.with_these_clinical_events(
         ms_no_primary_care,
-        on_or_before="index_date",
+        on_or_before=f"{index_date_variable}",
         returning="binary_flag",
         return_expectations={"incidence": 0.01},
     ),
 
     fu_ms_no_gp=patients.with_these_clinical_events(
         ms_no_primary_care,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True, 
         returning="date", 
         date_format="YYYY-MM-DD",
-        return_expectations={"date": {"earliest": "index_date"}, 
-                             "incidence":0.01},
     ),
 
     ### CIDP
     history_cidp_gp=patients.with_these_clinical_events(
         cidp_primary_care,
-        on_or_before="index_date",
+        on_or_before=f"{index_date_variable}",
         returning="binary_flag",
         return_expectations={"incidence": 0.01},
     ),
 
     fu_cidp_gp=patients.with_these_clinical_events(
         cidp_primary_care,
-        on_or_after="index_date",
+        on_or_after=f"{index_date_variable}",
         find_first_match_in_period=True, 
         returning="date", 
         date_format="YYYY-MM-DD",
-        return_expectations={"date": {"earliest": "index_date"}, 
-                             "incidence":0.01},
     ),
 
     ## cancer 
     ### haematological 
     haem_cancer_date=patients.with_these_clinical_events(
         haematological_cancer,
-        on_or_before="index_date",
+        on_or_before=f"{index_date_variable}",
         find_first_match_in_period=True, 
         returning="date",
         date_format="YYYY-MM", 
-        return_expectations={"date": {"latest": "index_date"}},
     ),
     ### non-haematological 
     nonhaem_nonlung_cancer_date=patients.with_these_clinical_events(
         cancer_excluding_lung_and_haematological,
-        on_or_before="index_date",
+        on_or_before=f"{index_date_variable}",
         find_first_match_in_period=True, 
         returning="date",
         date_format="YYYY-MM", 
-        return_expectations={"date": {"latest": "index_date"}},
     ),
     ### lung
     lung_cancer_date=patients.with_these_clinical_events(
         lung_cancer,
-        on_or_before="index_date",
+        on_or_before=f"{index_date_variable}",
         find_first_match_in_period=True, 
         returning="date",
         date_format="YYYY-MM", 
-        return_expectations={"date": {"latest": "index_date"}},
     ),
     ## diabetes
     diabetes=patients.with_these_clinical_events(
         diabetes,
-        on_or_before="index_date",
+        on_or_before=f"{index_date_variable}",
         returning="binary_flag",
         return_expectations={"incidence": 0.20},
     ),
     ## hiv
     hiv=patients.with_these_clinical_events(
         hiv,
-        on_or_before="index_date",
+        on_or_before=f"{index_date_variable}",
         returning="binary_flag",
         return_expectations={"incidence": 0.20},
     ),
@@ -155,6 +149,26 @@ def generate_confounding_variables(index_date):
         date_format="YYYY-MM-DD",
         return_expectations={"date": {"earliest" : "2020-02-01"},
         "incidence" : 0.25},
+    ),
+
+    ## AUTOIMMUNE CONDITIONS
+    antiphospholipid=patients.with_these_clinical_events(
+        antiphospholipid,
+        on_or_before=f"{index_date_variable}",
+        returning="binary_flag",
+        return_expectations={"incidence": 0.20},
+    ),
+    rheumatoid_arthritis=patients.with_these_clinical_events(
+        rheumatoid_arthritis,
+        on_or_before=f"{index_date_variable}",
+        returning="binary_flag",
+        return_expectations={"incidence": 0.20},
+    ),
+    lupus=patients.with_these_clinical_events(
+        lupus,
+        on_or_before=f"{index_date_variable}",
+        returning="binary_flag",
+        return_expectations={"incidence": 0.20},
     ),
     # OTHER VARIABLES 
     ## Health care worker status 

@@ -15,11 +15,11 @@ from codelists import *
 
 ## vaccine variables 
 from vaccine_variables import generate_vaccine_variables
-vaccine_variables = generate_vaccine_variables(index_date="index_date")
+vaccine_variables = generate_vaccine_variables(index_date_variable="index_date")
 
 ## matching variables 
 from matching_variables import generate_matching_variables
-matching_variables = generate_matching_variables(index_date="index_date")
+matching_variables = generate_matching_variables(index_date_variable="index_date")
 
 # Specify study definition
 
