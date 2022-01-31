@@ -10,9 +10,10 @@ opensafely/hiv/2020-07-13
 opensafely/lung-cancer/2020-04-15
 opensafely/cancer-excluding-lung-and-haematological/2020-04-15
 opensafely/haematological-cancer/2020-04-15
-opensafely/systemic-lupus-erythematosus-sle/2020-05-12
 opensafely/hypertension/2020-04-28
 primis-covid19-vacc-uptake/preg/v1
 opensafely/multiple-sclerosis-v2/063627df
 opensafely/chronic-inflammatory-demyelinating-polyneuropathy-cidp/38550e49
-
+opensafely/antiphospholipid-syndrome/3a8c6298
+opensafely/rheumatoid-arthritis/68dc9931
+opensafely/systemic-lupus-erythematosus-sle/36bdb2c7

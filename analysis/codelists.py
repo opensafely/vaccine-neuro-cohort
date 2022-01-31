@@ -66,11 +66,6 @@ haematological_cancer = codelist_from_csv(
     system="ctv3",
     column="CTV3ID",
 )
-systemic_lupus = codelist_from_csv(
-    "codelists/opensafely-systemic-lupus-erythematosus-sle.csv",
-    system="ctv3",
-    column="CTV3ID",
-)
 hypertension = codelist_from_csv(
     "codelists/opensafely-hypertension.csv",
     system="ctv3",
@@ -91,3 +86,31 @@ cidp_primary_care = codelist_from_csv(
     system="ctv3",
     column="code",
 )
+
+# Systemic inflammatory or autoimmune disorders combining: 
+## ankylosing spondylitis
+## antiphospholipid syndrome
+antiphospholipid = codelist_from_csv(
+    "codelists/opensafely-antiphospholipid-syndrome.csv",
+    system="ctv3",
+    column="code",
+)
+## Behçet disease
+## mixed connective tissue disease
+## rheumatoid arthritis a
+rheumatoid_arthritis = codelist_from_csv(
+    "codelists/opensafely-rheumatoid-arthritis.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
+## SLE 
+lupus = codelist_from_csv(
+    "codelists/opensafely-systemic-lupus-erythematosus-sle.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
+## sarcoidosis
+## scleroderma
+## Sjögren syndrome
+
+

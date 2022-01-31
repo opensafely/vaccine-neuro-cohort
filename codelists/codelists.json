@@ -72,12 +72,6 @@
       "downloaded_at": "2022-01-14 13:59:37.042146Z",
       "sha": "59d65c613a7b984ba46eca8a74eedcc6320609fe"
     },
-    "opensafely-systemic-lupus-erythematosus-sle.csv": {
-      "id": "opensafely/systemic-lupus-erythematosus-sle/2020-05-12",
-      "url": "https://codelists.opensafely.org/codelist/opensafely/systemic-lupus-erythematosus-sle/2020-05-12/",
-      "downloaded_at": "2022-01-14 13:59:37.219234Z",
-      "sha": "a7354e610e9ccc2f22f8e8b9b1a7c329a971aa7c"
-    },
     "opensafely-hypertension.csv": {
       "id": "opensafely/hypertension/2020-04-28",
       "url": "https://codelists.opensafely.org/codelist/opensafely/hypertension/2020-04-28/",
@@ -101,6 +95,24 @@
       "url": "https://codelists.opensafely.org/codelist/opensafely/chronic-inflammatory-demyelinating-polyneuropathy-cidp/38550e49/",
       "downloaded_at": "2022-01-14 13:59:38.030174Z",
       "sha": "0f1fad6834a47aa99f0f3d022f52eb8217d9bfba"
+    },
+    "opensafely-antiphospholipid-syndrome.csv": {
+      "id": "opensafely/antiphospholipid-syndrome/3a8c6298",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/antiphospholipid-syndrome/3a8c6298/",
+      "downloaded_at": "2022-01-31 09:55:18.473537Z",
+      "sha": "5519b9437478f1d67ed7973eb0775d4811957068"
+    },
+    "opensafely-rheumatoid-arthritis.csv": {
+      "id": "opensafely/rheumatoid-arthritis/68dc9931",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/rheumatoid-arthritis/68dc9931/",
+      "downloaded_at": "2022-01-31 12:28:43.302422Z",
+      "sha": "4042d1daebf9ab893093d0eeff6b62ad5927c86e"
+    },
+    "opensafely-systemic-lupus-erythematosus-sle.csv": {
+      "id": "opensafely/systemic-lupus-erythematosus-sle/36bdb2c7",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/systemic-lupus-erythematosus-sle/36bdb2c7/",
+      "downloaded_at": "2022-01-31 12:28:43.475744Z",
+      "sha": "a7354e610e9ccc2f22f8e8b9b1a7c329a971aa7c"
     }
   }
 }
