@@ -16,7 +16,6 @@ actions:
         cohort: output/input_exposed.csv
 
   ## Extract data on potential concurrent controls 
-  ## NB; This study definition only contains the data needed for matching
   generate_concurrent_controls:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_concurrent_controls
     outputs:
@@ -24,10 +23,9 @@ actions:
         cohort: output/input_concurrent_controls.csv
 
   ## Extract data on potential historical controls
-  ## NB; This study definition only contains the data needed for matching
 
 # MATCH EXPOSED TO CONTROLS 
-# Note that exposed and resulting matches need to be extracted into separate csvs to allow appropriate covariate information to be extracted 
+# Note that exposed and resulting matches need to_c be extracted into separate csvs to allow appropriate covariate information to be extracted 
 
   ## Match vaccinated people to concurrent controls 
   match_concurrent:
@@ -39,12 +37,31 @@ actions:
       highly_sensitive:
         matched_cases: output/matched_cases_concurrent.csv
         matched_matches: output/matched_matches_concurrent.csv
+        matched_all: output/matched_combined_concurrent.csv
 
   ## Match vaccinated people to historical controls 
 
-  ## Extract time-updated data for matched concurrent controls 
+  ## Extract time-dependent data for matched concurrent controls 
+  add_covariates_concurrent_controls:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_complete_concurrent 
+    needs: [match_concurrent]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_complete_concurrent.csv
+
+  ## Extract time-dependent data for matched historical controls 
 
 # CREATE THE REQUIRED POPULATIONS 
 ## ie, merge case and match data, apply remaining inclusions and exclusions
+
+  apply_exclusion_criteria:
+    run: stata-mp:latest analysis/01_apply_exclusion_criteria.do 
+    needs: [add_covariates_concurrent_controls, match_concurrent] 
+    outputs:
+      moderately_sensitive: 
+        log: output/logs/01_apply_exclusion_criteria.log
+      highly_sensitive:
+        interim_data: output/concurrent_cohort.dta
+
 
 
