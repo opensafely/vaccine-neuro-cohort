@@ -142,16 +142,6 @@ def generate_vaccine_variables(index_date_variable):
     ),
 
     second_known_vaccine_date = patients.minimum_of("second_moderna_date", "second_az_date", "second_pfizer_date"), 
-
-    # overlapping first doses 
-    overlap_az_moderna=patients.with_tpp_vaccination_record(
-        target_disease_matches="SARS-2 CORONAVIRUS",
-        product_name_matches="COVID-19 Vac AstraZeneca (ChAdOx1 S recomb) 5x10000000000 viral particles/0.5ml dose sol for inj MDV",
-        between=["first_moderna_date", "first_moderna_date"], 
-        find_first_match_in_period=True,
-        returning="binary_flag",
-        return_expectations={"incidence": 0.01}, 
-    ),
      
     )
     return vaccine_variables
