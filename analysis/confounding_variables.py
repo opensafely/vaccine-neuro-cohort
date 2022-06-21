@@ -151,6 +151,13 @@ def generate_confounding_variables(index_date_variable):
         "incidence" : 0.25},
     ),
 
+    ## hypertension
+    hypertension=patients.with_these_clinical_events(
+        hypertension,
+        on_or_before=f"{index_date_variable}",
+        returning="binary_flag",
+        return_expectations={"incidence": 0.40},
+    ),
     ## AUTOIMMUNE CONDITIONS
     antiphospholipid=patients.with_these_clinical_events(
         antiphospholipid,
